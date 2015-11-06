@@ -502,6 +502,7 @@
 				FA6406DC1BEBD1DA007CF060 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA6406DD1BEBD1DA007CF060 /* Build configuration list for PBXNativeTarget "Tic-Tac-ToeTests" */ = {
 			isa = XCConfigurationList;
@@ -510,6 +511,7 @@
 				FA6406DF1BEBD1DA007CF060 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA6406E01BEBD1DA007CF060 /* Build configuration list for PBXNativeTarget "Tic-Tac-ToeUITests" */ = {
 			isa = XCConfigurationList;
@@ -518,6 +520,7 @@
 				FA6406E21BEBD1DA007CF060 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

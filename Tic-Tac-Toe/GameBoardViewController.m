@@ -18,19 +18,22 @@
     [super viewDidLoad];
     
     // Initialize Player objects with default values
-    Player *xPlayer = [[Player alloc] init];
-    Player *oPlayer = [[Player alloc] init];
+    Player *player1 = [[Player alloc] init];
+    Player *player2 = [[Player alloc] init];
     
-    xPlayer.playerID = @"X";
-    xPlayer.selectedBoxes = [[NSMutableArray alloc] initWithCapacity:0];
+    player1.playerID = @"Blue";
+    player1.selectedBoxes = [[NSMutableArray alloc] initWithCapacity:0];
     
-    oPlayer.playerID = @"O";
-    oPlayer.selectedBoxes = [[NSMutableArray alloc] initWithCapacity:0];
+    player2.playerID = @"Purple";
+    player2.selectedBoxes = [[NSMutableArray alloc] initWithCapacity:0];
     
     // Initialize GameBoard objects and set current player to X
-    self.players = [NSMutableArray arrayWithObjects:xPlayer, oPlayer, nil];
-    self.currentPlayer = xPlayer;
+    self.players = [NSMutableArray arrayWithObjects:player1, player2, nil];
+    self.currentPlayer = player1;
     self.selectedBoxes = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    self.color2 = [UIColor colorWithRed:0.678f green:0.184f blue:0.957f alpha:1.00f];
+    self.color1 = [UIColor colorWithRed:0.129f green:0.753f blue:0.992f alpha:1.00f];
     
     NSLog(@"%@", self.gameBoxes);
 }
@@ -46,7 +49,7 @@
     UITouch *eventInfo = [[event allTouches] anyObject];
     
     for (UIImageView *box in self.gameBoxes) {
-        if (CGRectContainsPoint(box.frame, [eventInfo locationInView:self.view]) && ![self isSelected:box]) {
+        if (CGRectContainsPoint(box.frame, [eventInfo locationInView:self.gridView]) && ![self isSelected:box]) {
             
             // Add selected box to array of selected boxes
             [self.selectedBoxes addObject:box];
@@ -54,10 +57,10 @@
             BOOL isDiagonal = [self isDiagonal:box];
             BOOL isAntiDiagonal = [self isAntiDiagonal:box];
 
-            if ([self.currentPlayer.playerID isEqual:@"X"]) {
-                box.backgroundColor = [UIColor blueColor];
+            if ([self.currentPlayer.playerID isEqual:@"Blue"]) {
+                box.backgroundColor = self.color1;
                 
-                // Adds box to list of player X's selected boxes and checks if player X won
+                // Adds box to list of player 1's selected boxes and checks if player 1 won
                 if ([self.currentPlayer addBox:box isDiagonal:isDiagonal isAntiDiagonal:isAntiDiagonal]) {
                     [self endGameWithPlayer:self.currentPlayer];
                 }
@@ -67,17 +70,17 @@
                     [self endGameWithPlayer:nil];
                 }
                 
-                  // Player X did not win so change to player O
+                  // Player 1 did not win so change to player 2
                 else {
                     self.currentPlayer = self.players[1];
-                    self.statusLabel.text = @"It is player O's turn";
+                    self.statusLabel.text = @"It is purple's turn";
                 }
             }
             
             else {
-                box.backgroundColor = [UIColor redColor];
+                box.backgroundColor = self.color2;
                 
-                // Adds box to list of player O's selected boxes and checks if player O won
+                // Adds box to list of player 2's selected boxes and checks if player O won
                 if ([self.currentPlayer addBox:box isDiagonal:isDiagonal isAntiDiagonal:isAntiDiagonal]) {
                     [self endGameWithPlayer:self.currentPlayer];
                 }
@@ -87,10 +90,10 @@
                     [self endGameWithPlayer:nil];
                 }
                 
-                // Player O did not win so switch to player X
+                // Player 2 did not win so switch to player 1
                 else {
                     self.currentPlayer = self.players[0];
-                    self.statusLabel.text = @"It is player X's turn";
+                    self.statusLabel.text = @"It is blue's turn";
                 }
             }
         }
@@ -99,7 +102,7 @@
 
 - (BOOL)isSelected:(UIImageView *)box {
     // Return YES if the box has already been selected/colored in
-    if (box.backgroundColor == [UIColor blueColor] || box.backgroundColor == [UIColor redColor]) {
+    if ([box.backgroundColor isEqual:self.color1] || [box.backgroundColor isEqual:self.color2]) {
         return YES;
     }
     return NO;
@@ -155,7 +158,7 @@
     else {
         
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Congratulations!"
-                                                                       message:[NSString stringWithFormat:@"Player %@ won!", winner.playerID]
+                                                                       message:[NSString stringWithFormat:@"%@ won!", winner.playerID]
                                                                 preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *restartAction = [UIAlertAction actionWithTitle:@"New Game" style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action) {
@@ -194,6 +197,19 @@
     self.selectedBoxes = [[NSMutableArray alloc] initWithCapacity:0];
     
     self.statusLabel.text = @"Select any square to start!";
+}
+
+- (IBAction)userRestart:(id)sender {
+    // User initiated game restart
+    [self restartGame];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return NO;
 }
 
 @end
