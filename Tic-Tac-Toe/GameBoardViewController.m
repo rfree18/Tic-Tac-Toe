@@ -27,15 +27,14 @@
     player2.playerID = @"Purple";
     player2.selectedBoxes = [[NSMutableArray alloc] initWithCapacity:0];
     
-    // Initialize GameBoard objects and set current player to X
+    // Initialize GameBoard objects and set current player to 1
     self.players = [NSMutableArray arrayWithObjects:player1, player2, nil];
     self.currentPlayer = player1;
     self.selectedBoxes = [[NSMutableArray alloc] initWithCapacity:0];
     
+    // Set color values
     self.color2 = [UIColor colorWithRed:0.678f green:0.184f blue:0.957f alpha:1.00f];
     self.color1 = [UIColor colorWithRed:0.129f green:0.753f blue:0.992f alpha:1.00f];
-    
-    NSLog(@"%@", self.gameBoxes);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -100,6 +99,8 @@
     }
 }
 
+#pragma mark - Board Conditions
+
 - (BOOL)isSelected:(UIImageView *)box {
     // Return YES if the box has already been selected/colored in
     if ([box.backgroundColor isEqual:self.color1] || [box.backgroundColor isEqual:self.color2]) {
@@ -137,6 +138,8 @@
     return NO;
 }
 
+#pragma mark - Game Actions
+
 - (void)endGameWithPlayer:(Player *)winner {
     // Display appropriate alert depending on end game status and allow user to start a new game
     
@@ -171,7 +174,6 @@
     }
 }
 
-
 - (void)restartGame {
     Player *xPlayer = self.players[0];
     Player *oPlayer = self.players[1];
@@ -203,6 +205,8 @@
     // User initiated game restart
     [self restartGame];
 }
+
+#pragma mark - Status Bar States
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
